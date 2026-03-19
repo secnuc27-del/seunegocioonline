@@ -726,27 +726,27 @@
         <div class="p5row">
           <div class="p5field">
             <label class="p5label">Nome do responsável</label>
-            <input class="p5input" type="text" placeholder="Seu nome"/>
+            <input class="p5input" type="text" placeholder="Seu nome" id="f-nome"/>
           </div>
           <div class="p5field">
             <label class="p5label">Nome do negócio</label>
-            <input class="p5input" type="text" placeholder="Nome da empresa"/>
+            <input class="p5input" type="text" placeholder="Nome da empresa" id="f-negocio"/>
           </div>
         </div>
         <div class="p5row">
           <div class="p5field">
             <label class="p5label">WhatsApp</label>
-            <input class="p5input" type="tel" placeholder="(00) 00000-0000"/>
+            <input class="p5input" type="tel" placeholder="(00) 00000-0000" id="f-wpp"/>
           </div>
           <div class="p5field">
             <label class="p5label">E-mail</label>
-            <input class="p5input" type="email" placeholder="seu@email.com"/>
+            <input class="p5input" type="email" placeholder="seu@email.com" id="f-email"/>
           </div>
         </div>
         <div class="p5row">
           <div class="p5field">
             <label class="p5label">Tipo de negócio</label>
-            <select class="p5select">
+            <select class="p5select" id="f-tipo">
               <option value="" disabled selected>Selecione</option>
               <option>Mercado</option>
               <option>Loja</option>
@@ -759,7 +759,7 @@
           </div>
           <div class="p5field">
             <label class="p5label">Tipo de site desejado</label>
-            <select class="p5select">
+            <select class="p5select" id="f-site">
               <option value="" disabled selected>Selecione</option>
               <option>Institucional</option>
               <option>Catálogo</option>
@@ -772,7 +772,7 @@
         <div class="p5row">
           <div class="p5field">
             <label class="p5label">Plano desejado</label>
-            <select class="p5select">
+            <select class="p5select" id="f-plano">
               <option value="" disabled selected>Selecione</option>
               <option>Básico — a partir de R$ 250</option>
               <option>Profissional — a partir de R$ 450</option>
@@ -782,7 +782,7 @@
           </div>
           <div class="p5field">
             <label class="p5label">Prazo desejado</label>
-            <select class="p5select">
+            <select class="p5select" id="f-prazo">
               <option value="" disabled selected>Selecione</option>
               <option>O quanto antes</option>
               <option>Em alguns dias</option>
@@ -792,9 +792,9 @@
         </div>
         <div class="p5field">
           <label class="p5label">Fale sobre o que você deseja</label>
-          <textarea class="p5textarea" placeholder="Descreva sua ideia, estilo, referências e o que deseja mostrar no site..."></textarea>
+          <textarea class="p5textarea" id="f-desc" placeholder="Descreva sua ideia, estilo, referências e o que deseja mostrar no site..."></textarea>
         </div>
-        <button class="p5submit">
+        <button class="p5submit" onclick="enviarWpp()">
           <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
           Solicitar meu projeto
         </button>
@@ -933,6 +933,38 @@ function animP5() {
     .to('.p5sub',{opacity:1,y:0,duration:.7},0.4)
     .to('.p5body',{opacity:1,y:0,duration:.8},0.55)
     .to('.p5footer',{opacity:1,y:0,duration:.6},1.1);
+}
+
+
+function enviarWpp() {
+  var nome    = document.getElementById('f-nome')?.value || '';
+  var negocio = document.getElementById('f-negocio')?.value || '';
+  var wpp     = document.getElementById('f-wpp')?.value || '';
+  var email   = document.getElementById('f-email')?.value || '';
+  var tipo    = document.getElementById('f-tipo')?.value || '';
+  var site    = document.getElementById('f-site')?.value || '';
+  var plano   = document.getElementById('f-plano')?.value || '';
+  var prazo   = document.getElementById('f-prazo')?.value || '';
+  var desc    = document.getElementById('f-desc')?.value || '';
+
+  if (!nome || !negocio || !wpp) {
+    alert('Por favor, preencha pelo menos seu nome, negócio e WhatsApp!');
+    return;
+  }
+
+  var msg = '*🚀 Solicitação de Site — site.pro*\n\n'
+    + '*Nome:* ' + nome + '\n'
+    + '*Negócio:* ' + negocio + '\n'
+    + '*WhatsApp:* ' + wpp + '\n'
+    + (email ? '*E-mail:* ' + email + '\n' : '')
+    + (tipo  ? '*Tipo de negócio:* ' + tipo + '\n' : '')
+    + (site  ? '*Tipo de site:* ' + site + '\n' : '')
+    + (plano ? '*Plano desejado:* ' + plano + '\n' : '')
+    + (prazo ? '*Prazo:* ' + prazo + '\n' : '')
+    + (desc  ? '\n*Descrição:*\n' + desc : '');
+
+  var url = 'https://wa.me/5568992528827?text=' + encodeURIComponent(msg);
+  window.open(url, '_blank');
 }
 
 // monta email sem ser detectado
