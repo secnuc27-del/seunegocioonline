@@ -13,8 +13,8 @@
     /* páginas */
     .pg{display:none;min-height:100vh}
     .pg.on{display:block}
-    #pg1.on{overflow:hidden;height:100vh}
-    #pg2.on{overflow-y:auto}
+    #pg1.on{display:flex!important;flex-direction:column;overflow:hidden;height:100vh}
+    #pg2.on{display:block;overflow-y:auto}
 
     /* transição */
     #pt{position:fixed;inset:0;background:#000;z-index:9999;pointer-events:none;opacity:0}
@@ -458,6 +458,73 @@
       .btn:hover,.p4btn:hover,.p5submit:hover,.nav__cta:hover{transform:none}
     }
 
+
+    /* ── BACK BUTTON ── */
+    .back-btn {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.80);
+      font-family: 'Sora', sans-serif;
+      font-size: .85rem;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all .2s;
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 50;
+      white-space: nowrap;
+      backdrop-filter: blur(10px);
+    }
+    .back-btn:hover { background: rgba(255,255,255,0.10); color: #fff; }
+
+    @media(max-width:768px) {
+      .nav {
+        padding: .9rem 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: .6rem;
+      }
+      .nav__links {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: .5rem;
+        width: 100%;
+        padding-bottom: 2px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .nav__links::-webkit-scrollbar { display: none; }
+      .nav__link {
+        font-size: .78rem !important;
+        white-space: nowrap;
+        padding: 6px 12px;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: 20px;
+        flex-shrink: 0;
+      }
+      .nav__link.cur {
+        background: rgba(249,115,22,0.15) !important;
+        border-color: rgba(249,115,22,0.40) !important;
+        color: var(--accent) !important;
+      }
+      .nav__link::after { display: none; }
+      .nav__cta {
+        font-size: .78rem !important;
+        padding: 7px 14px !important;
+        flex-shrink: 0;
+      }
+      .back-btn { display: flex; }
+    }
+
   </style>
 </head>
 <body>
@@ -466,7 +533,7 @@
 
 <nav class="nav">
   <span class="nav__logo" onclick="ir('pg1')">site<b>.</b>pro</span>
-  <div class="nav__links">
+  <div class="nav__links" id="nav-links">
     <span class="nav__link cur" id="nl-pg1" onclick="ir('pg1')">Hero</span>
     <span class="nav__link" id="nl-pg2" onclick="ir('pg2')">Para quem é</span>
     <span class="nav__link" id="nl-pg3" onclick="ir('pg3')">Como funciona</span>
@@ -474,6 +541,7 @@
     <span class="nav__link" id="nl-pg5" onclick="ir('pg5')">Contato</span>
     <button class="nav__cta" onclick="ir('pg5')">Solicitar</button>
   </div>
+
 </nav>
 
 <!-- ══ PG1: HERO ══ -->
@@ -549,6 +617,11 @@
 
 <!-- ══ PG3: COMO FUNCIONA ══ -->
 <div class="pg" id="pg3" style="background:#09090d;display:none">
+  <button class="back-btn" onclick="ir('pg2')">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Para quem é
+  </button>
+
   <div class="p3wrap">
     <div class="p3top">
       <div class="p3badge"><span class="p3badge__dot"></span><span class="p3badge__text">Como funciona</span></div>
@@ -602,6 +675,11 @@
 
 <!-- ══ PG4: PLANOS ══ -->
 <div class="pg" id="pg4" style="background:#09090d;display:none">
+  <button class="back-btn" onclick="ir('pg3')">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Como funciona
+  </button>
+
   <div class="p4wrap">
     <div class="p4top">
       <div class="p4badge"><span class="p4badge__dot"></span><span class="p4badge__text">Planos</span></div>
@@ -680,6 +758,11 @@
 
 <!-- ══ PG5: FORMULÁRIO ══ -->
 <div class="pg" id="pg5" style="background:#09090d;display:none">
+  <button class="back-btn" onclick="ir('pg4')">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    Planos
+  </button>
+
   <div class="p5wrap">
 
     <div class="p5top">
@@ -934,6 +1017,8 @@ function animP5() {
     .to('.p5body',{opacity:1,y:0,duration:.8},0.55)
     .to('.p5footer',{opacity:1,y:0,duration:.6},1.1);
 }
+
+
 
 
 function enviarWpp() {
