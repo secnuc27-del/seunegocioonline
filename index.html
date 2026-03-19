@@ -485,44 +485,56 @@
     .back-btn:hover { background: rgba(255,255,255,0.10); color: #fff; }
 
     @media(max-width:768px) {
-      .nav {
-        padding: .9rem 1rem;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: .6rem;
+      /* nav topo: só logo */
+      .nav { padding: 1rem 1.4rem; }
+      .nav__links { display: none !important; }
+      .nav__cta { display: none !important; }
+      .back-btn { display: none !important; }
+
+      /* padding inferior pra não ficar atrás da tab bar */
+      .p1body, .p2wrap, .p3wrap, .p4wrap, .p5wrap {
+        padding-bottom: 90px !important;
       }
-      .nav__links {
-        display: flex;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        gap: .5rem;
-        width: 100%;
-        padding-bottom: 2px;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-      }
-      .nav__links::-webkit-scrollbar { display: none; }
-      .nav__link {
-        font-size: .78rem !important;
-        white-space: nowrap;
-        padding: 6px 12px;
-        background: rgba(255,255,255,0.05);
-        border: 1px solid rgba(255,255,255,0.10);
-        border-radius: 20px;
-        flex-shrink: 0;
-      }
-      .nav__link.cur {
-        background: rgba(249,115,22,0.15) !important;
-        border-color: rgba(249,115,22,0.40) !important;
-        color: var(--accent) !important;
-      }
-      .nav__link::after { display: none; }
-      .nav__cta {
-        font-size: .78rem !important;
-        padding: 7px 14px !important;
-        flex-shrink: 0;
-      }
-      .back-btn { display: flex; }
+    }
+
+
+    /* ══ BOTTOM TAB BAR ══ */
+    .tabbar {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 200;
+      background: rgba(10,10,14,0.97);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 6px 0 env(safe-area-inset-bottom, 6px);
+      justify-content: space-around;
+      align-items: center;
+    }
+    .tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.45);
+      font-family: 'Manrope', sans-serif;
+      font-size: .60rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 6px 8px;
+      border-radius: 10px;
+      transition: color .2s;
+      min-width: 52px;
+    }
+    .tab svg { width: 22px; height: 22px; }
+    .tab span { white-space: nowrap; }
+    .tab.active { color: var(--accent); }
+    .tab.active svg { stroke: var(--accent); }
+
+    @media(max-width:768px) {
+      .tabbar { display: flex; }
     }
 
   </style>
@@ -896,6 +908,31 @@
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 
+
+<!-- ══ BOTTOM TAB BAR (mobile) ══ -->
+<div class="tabbar" id="tabbar">
+  <button class="tab active" id="tab-pg1" onclick="ir('pg1')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Início</span>
+  </button>
+  <button class="tab" id="tab-pg2" onclick="ir('pg2')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    <span>Para quem</span>
+  </button>
+  <button class="tab" id="tab-pg3" onclick="ir('pg3')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <span>Como funciona</span>
+  </button>
+  <button class="tab" id="tab-pg4" onclick="ir('pg4')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+    <span>Planos</span>
+  </button>
+  <button class="tab" id="tab-pg5" onclick="ir('pg5')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <span>Contato</span>
+  </button>
+</div>
+
 </body>
 </html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -925,6 +962,10 @@ function ir(id) {
 }
 
 function updateNav() {
+  // atualiza tab bar
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.id === 'tab-' + cur);
+  });
   document.querySelectorAll('.nav__link').forEach(l => {
     l.classList.toggle('cur', l.getAttribute('onclick') === "ir('"+cur+"')");
   });
@@ -1062,5 +1103,30 @@ function enviarWpp() {
 gsap.fromTo(pt,{opacity:1},{opacity:0,duration:.6,ease:'power2.out',delay:.1,onComplete:animP1});
 updateNav();
 </script>
+
+<!-- ══ BOTTOM TAB BAR (mobile) ══ -->
+<div class="tabbar" id="tabbar">
+  <button class="tab active" id="tab-pg1" onclick="ir('pg1')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Início</span>
+  </button>
+  <button class="tab" id="tab-pg2" onclick="ir('pg2')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    <span>Para quem</span>
+  </button>
+  <button class="tab" id="tab-pg3" onclick="ir('pg3')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <span>Como funciona</span>
+  </button>
+  <button class="tab" id="tab-pg4" onclick="ir('pg4')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+    <span>Planos</span>
+  </button>
+  <button class="tab" id="tab-pg5" onclick="ir('pg5')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <span>Contato</span>
+  </button>
+</div>
+
 </body>
 </html>
